@@ -1,38 +1,71 @@
-import * as React from "react"
+import * as React from "react";
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
   VStack,
-  Code,
-  Grid,
   theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+} from "@chakra-ui/react";
+import ShareWidget from "./Widgets/ShareWidget";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
+const peopleData1 = [
+  { name: "Tom Cook", id: "1001" },
+  { name: "John Doe", id: "1002" },
+  { name: "Arth G", id: "1003" },
+  { name: "Honey G", id: "1004" },
+  { name: "Symbol S", id: "1005" },
+  { name: "Trambak R", id: "1006" },
+  { name: "Prashant C", id: "1007" },
+  { name: "Sanketh K", id: "1008" },
+];
+
+const peopleData2 = [
+  { name: "Tom Cook", id: "1001" },
+  { name: "John Doe", id: "1002" },
+  { name: "Prashant C", id: "1007" },
+  { name: "Sanketh K", id: "1008" },
+];
+
+const peopleData3 = [
+  { name: "Tom Cook", id: "1001" },
+  { name: "John Doe", id: "1002" },
+  { name: "Arth G", id: "1003" },
+];
+
+export const App = () => {
+  const [data, setData] = React.useState<Record<string, any[]>>({});
+  const sendData = (key: string) => (value: any[]) =>
+    setData({ ...data, [key]: value });
+  return (
+    <ChakraProvider theme={theme}>
+      <Box textAlign="left" p="8">
+        <VStack>
+            <ShareWidget sendData={sendData('one')} people={peopleData1} />
+            <br />
+            {data['one']?.map((o) => (
+              <>&nbsp; {o.name}</>
+            ))}
+            <br />
+            <br />
+            <br />
+
+            <ShareWidget sendData={sendData('two')} people={peopleData2} />
+            <br />
+            {data['two']?.map((o) => (
+              <>&nbsp; {o.name}</>
+            ))}
+            <br />
+            <br />
+            <br />
+
+            <ShareWidget sendData={sendData('three')} people={peopleData3} />
+            <br />
+            {data['three']?.map((o) => (
+              <>&nbsp; {o.name}</>
+            ))}
+            <br />
+            <br />
         </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+      </Box>
+    </ChakraProvider>
+  );
+};
